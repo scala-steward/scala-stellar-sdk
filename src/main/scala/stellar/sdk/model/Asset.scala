@@ -33,6 +33,8 @@ sealed trait NonNativeAsset extends Asset {
   val typeString: String
 
   override def toString: String = s"${issuer.accountId}:$code"
+
+  def apply(units: Long): IssuedAmount = IssuedAmount.apply(units, this)
 }
 
 /**

@@ -6,7 +6,7 @@ import java.util.Arrays
 import cats.data.State
 import net.i2p.crypto.eddsa._
 import net.i2p.crypto.eddsa.spec._
-import stellar.sdk.model.{AccountId, Seed, StrKey}
+import stellar.sdk.model.{AccountId, Asset, NonNativeAsset, Seed, StrKey}
 import stellar.sdk.model.xdr.{Decode, Encodable, Encode}
 import stellar.sdk.util.ByteArrays
 
@@ -82,6 +82,7 @@ sealed trait PublicKeyOps extends Encodable {
     */
   def asPublicKey = PublicKey(pk)
 
+  def issued(code: String): NonNativeAsset = Asset(code, this)
 
   /**
     * A four-byte code that provides a hint to the identity of this public key

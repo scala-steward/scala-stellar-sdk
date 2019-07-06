@@ -14,9 +14,10 @@ import stellar.sdk.util.ByteArrays.paddedByteArray
 /**
   * An Operation represents a change to the ledger. It is the action, as opposed to the effects resulting from that action.
   */
-sealed trait Operation extends Encodable {
+sealed abstract class Operation extends Encodable {
   val sourceAccount: Option[PublicKeyOps]
   override def encode: Stream[Byte] = Encode.opt(sourceAccount)
+  def from(publicKey: PublicKeyOps): this.type
 }
 
 object Operation {
@@ -206,6 +207,8 @@ case class CreateAccountOperation(destinationAccount: PublicKeyOps,
       Encode.int(0) ++
       destinationAccount.encode ++
       Encode.long(startingBalance.units)
+
+  override def from(publicKey: PublicKeyOps): CreateAccountOperation = copy(sourceAccount = Some(publicKey))
 }
 
 object CreateAccountOperation {

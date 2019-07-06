@@ -396,6 +396,29 @@ class DocExamples() {
     }
   }
 
+  def `dsl spiking`() = {
+
+    import stellar.sdk.Dsl._
+
+    def `create account`() = {
+
+      val alice = KeyPair.random
+      val bob = KeyPair.random
+
+      // TODO (jmawson) - Remove differentiation between IssuedAsset 4 & 12.
+      val aud = alice.issued("AUD")
+
+      transact(
+        Create.account(alice).withOpeningBalanceOf(Lumens(100)),
+        Pay.account(alice).amountOf(Lumens(100)),
+        Pay.account(alice).amountOf(aud(100)).from(bob),
+        Pay account alice amountOf aud(100) from bob
+      )
+    }
+
+
+  }
+
   class DoNothingNetwork extends Network {
     override val passphrase: String = "Scala SDK do-nothing network"
     override val horizon: HorizonAccess = new HorizonAccess {
